@@ -3,9 +3,9 @@ import mysql.connector
 import secrets
 
 app = Flask(__name__)
-app.secret_key = str(secrets.token_hex(16))  # Needed to use sessions
+app.secret_key = str(secrets.token_hex(16)) 
 
-# MySQL Database Configuration
+
 db = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -14,7 +14,7 @@ db = mysql.connector.connect(
 )
 cursor = db.cursor()
 
-# Route for Homepage (Login Page)
+
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -25,7 +25,7 @@ def login():
         user = cursor.fetchone()
 
         if user:
-            session['userid'] = userid  # Store user session
+            session['userid'] = userid 
             return redirect('/welcome')
         else:
             flash('Invalid credentials. Please try again.')
@@ -33,7 +33,7 @@ def login():
 
     return render_template('login.html')
 
-# Route for Registration
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -53,7 +53,7 @@ def register():
 
     return render_template('register.html')
 
-# Route for Welcome Page
+
 @app.route('/welcome')
 def welcome():
     if 'userid' in session:
@@ -62,6 +62,6 @@ def welcome():
         flash('Please log in first.')
         return redirect('/')
 
-# Run the Application
+
 if __name__ == '__main__':
     app.run(debug=True)
